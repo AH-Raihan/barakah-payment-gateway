@@ -91,5 +91,8 @@
     "Real-time alerts for received funds & payments": "تنبيهات فورية عند استلام الأموال والمدفوعات",
     "Enable Push Notifications": "تفعيل إشعارات الدفع",
     "Alerts Activated": "الإشعارات مفعلة",
-    "You are currently offline": "أنت غير متصل بالإنترنت حالياً"
+    "You are currently offline": "أنت غير متصل بالإنترنت حالياً",
+    "Registration is restricted to campus administration.": "التسجيل مقيد بإدارة المؤسسة فقط.",
+    "Public registration is currently disabled by institution administrators.": "تم إيقاف التسجيل العام حالياً بواسطة إدارة المؤسسة.",
+    "Public registration is currently disabled by institution administrators. Please contact campus administration to obtain an account.": "تم إيقاف التسجيل العام حالياً بواسطة إدارة المؤسسة. يرجى التواصل مع الإدارة للحصول على حساب."
 }

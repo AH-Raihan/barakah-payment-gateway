@@ -40,20 +40,6 @@
                 <input type="text" name="agent_account" x-model="agentAccount" required
                        placeholder="{{ __('Agent Account ID or Phone') }}"
                        class="w-full px-4 py-3.5 rounded-2xl bg-slate-50 border border-slate-300 text-slate-900 text-sm font-semibold focus:outline-none focus:border-amber-500 focus:bg-white focus:ring-2 focus:ring-amber-500/20 transition">
-
-                @if($agents->isNotEmpty())
-                <div class="mt-2.5">
-                    <p class="text-[11px] text-slate-500 mb-1.5 font-bold uppercase tracking-wider">Quick Select Authorized Agents:</p>
-                    <div class="flex flex-wrap gap-1.5">
-                        @foreach($agents as $agent)
-                        <button type="button" @click="agentAccount = '{{ $agent->phone ?? $agent->account_id }}'"
-                                class="text-xs font-bold px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 hover:bg-amber-100 transition shadow-sm">
-                            {{ $agent->name }} ({{ $agent->phone ?? $agent->account_id }})
-                        </button>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
             </div>
 
             <!-- Amount -->
@@ -92,7 +78,7 @@
     </div>
 
     <!-- QR Camera Scanner Modal -->
-    <div x-show="showScannerModal" x-transition.opacity class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4" style="display: none;">
+    <div x-show="showScannerModal" x-transition.opacity class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4" style="display: none;">
         <div @click.away="closeQrScanner()" class="bg-white rounded-3xl w-full max-w-sm p-5 shadow-2xl space-y-3 text-center">
             <div class="flex items-center justify-between">
                 <h3 class="text-sm font-bold text-slate-900">Scan Agent QR Code</h3>
@@ -108,10 +94,8 @@
     </div>
 
     <!-- 5-Digit PIN Modal -->
-    <div x-show="showPinModal" x-transition.opacity class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-950/70 backdrop-blur-sm p-0 sm:p-4" style="display: none;">
-        <div @click.away="showPinModal = false" class="bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-sm p-6 shadow-2xl text-center space-y-4">
-            <div class="w-12 h-1 bg-slate-300 rounded-full mx-auto sm:hidden mb-2"></div>
-            
+    <div x-show="showPinModal" x-transition.opacity class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/75 backdrop-blur-sm p-4 overflow-y-auto" style="display: none;">
+        <div @click.away="showPinModal = false" class="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl text-center space-y-4 my-auto border border-slate-100">
             <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-800 mx-auto flex items-center justify-center font-bold text-xl shadow-inner">
                 💵
             </div>

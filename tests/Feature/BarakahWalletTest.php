@@ -516,6 +516,11 @@ test('user can register device push notification token and remove it', function 
 });
 
 test('fcm service dispatches push notification to registered devices', function () {
+    \Illuminate\Support\Facades\Http::fake([
+        'https://oauth2.googleapis.com/*' => \Illuminate\Support\Facades\Http::response(['access_token' => 'mock_token', 'expires_in' => 3600]),
+        'https://fcm.googleapis.com/*' => \Illuminate\Support\Facades\Http::response(['name' => 'projects/barakah-c44d4/messages/msg_12345'], 200),
+    ]);
+
     $user = User::factory()->create(['role' => 'user', 'status' => 'active']);
     \App\Models\DeviceToken::create([
         'user_id' => $user->id,
@@ -549,4 +554,70 @@ test('pwa manifest and service worker assets exist and are valid', function () {
     expect(file_exists(public_path('sw.js')))->toBeTrue();
     expect(file_exists(public_path('firebase-messaging-sw.js')))->toBeTrue();
     expect(file_exists(public_path('.well-known/assetlinks.json')))->toBeTrue();
+});
+
+test('login and register pages contain valid favicon links and real favicon files exist', function () {
+    expect(file_exists(public_path('favicon.ico')))->toBeTrue();
+    expect(filesize(public_path('favicon.ico')))->toBeGreaterThan(0);
+    expect(file_exists(public_path('favicon-32x32.png')))->toBeTrue();
+    expect(file_exists(public_path('favicon-16x16.png')))->toBeTrue();
+
+    $loginRes = $this->get('/login');
+    $loginRes->assertStatus(200);
+    $loginRes->assertSee('favicon.ico');
+    $loginRes->assertSee('favicon-32x32.png');
+
+    $regRes = $this->get('/register');
+    $regRes->assertStatus(200);
+    $regRes->assertSee('favicon.ico');
+    $regRes->assertSee('favicon-32x32.png');
+});
+
+test('admin can toggle registration restriction and restrict public user registration', function () {
+    $admin = User::factory()->create([
+        'role' => 'admin',
+        'status' => 'active',
+        'pin' => Hash::make('12345'),
+    ]);
+    session(['pin_verified_at' => now()->timestamp]);
+
+    // Ensure registration is initially enabled
+    expect(\App\Models\SystemSetting::isRegistrationEnabled())->toBeTrue();
+
+    // Admin toggles registration off
+    $toggleRes = $this->actingAs($admin)
+        ->withSession(['pin_verified' => true, 'pin_verified_at' => now()->toISOString()])
+        ->post('/admin/settings/toggle-registration');
+
+    $toggleRes->assertRedirect();
+    expect(\App\Models\SystemSetting::isRegistrationEnabled())->toBeFalse();
+
+    // Guest tries to access /register -> gets redirected to login with error
+    auth()->logout();
+    $guestGet = $this->get('/register');
+    $guestGet->assertRedirect('/login');
+    $guestGet->assertSessionHas('error');
+
+    // Guest tries to post /register -> rejected
+    $guestPost = $this->post('/register', [
+        'name' => 'Restricted Candidate',
+        'email' => 'candidate@barakah.test',
+        'phone' => '01999887766',
+        'password' => 'Secret123',
+        'password_confirmation' => 'Secret123',
+    ]);
+    $guestPost->assertRedirect('/login');
+    $this->assertDatabaseMissing('users', ['email' => 'candidate@barakah.test']);
+
+    // Admin toggles registration back on
+    $this->actingAs($admin)
+        ->withSession(['pin_verified' => true, 'pin_verified_at' => now()->toISOString()])
+        ->post('/admin/settings/toggle-registration');
+
+    expect(\App\Models\SystemSetting::isRegistrationEnabled())->toBeTrue();
+
+    // Guest can now view /register
+    auth()->logout();
+    $allowedGet = $this->get('/register');
+    $allowedGet->assertStatus(200);
 });

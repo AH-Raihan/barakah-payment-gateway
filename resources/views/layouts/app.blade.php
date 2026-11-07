@@ -6,8 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#0d9488">
     <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/images/icons/icon-192x192.png">
-    <link rel="apple-touch-icon" href="/images/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/images/icons/icon-192x192.png">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -197,7 +200,7 @@
             </main>
 
             <!-- Mobile Android Bottom Navbar (Fixed at Bottom, lg:hidden) -->
-            <nav class="lg:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-50 shadow-lg">
+            <nav class="lg:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-40 shadow-lg">
                 <div class="grid grid-cols-4 h-16 max-w-md mx-auto">
                     <!-- Home -->
                     <a href="{{ route('dashboard') }}" class="flex flex-col items-center justify-center transition-colors {{ request()->routeIs('dashboard') ? 'text-teal-700 font-extrabold' : 'text-slate-500 hover:text-teal-600' }}">
@@ -302,7 +305,29 @@
             console.log('[Barakah PWA] App was successfully installed');
         });
 
-        // ─── 3. Push Notification Registration Helper ──────────────────
+        // ─── 3. Firebase SDK & Push Notification Registration Helper ───
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js"></script>
+    <script>
+        const firebaseWebConfig = {
+            apiKey: "{{ config('firebase.web.api_key') }}",
+            authDomain: "{{ config('firebase.web.auth_domain') }}",
+            projectId: "{{ config('firebase.web.project_id') }}",
+            storageBucket: "{{ config('firebase.web.storage_bucket') }}",
+            messagingSenderId: "{{ config('firebase.web.messaging_sender_id') }}",
+            appId: "{{ config('firebase.web.app_id') }}",
+            measurementId: "{{ config('firebase.web.measurement_id') }}"
+        };
+
+        try {
+            if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+                firebase.initializeApp(firebaseWebConfig);
+            }
+        } catch (e) {
+            console.warn('[Firebase Init Warning]', e);
+        }
+
         window.registerPushToken = async function() {
             if (!('Notification' in window)) {
                 alert('Notifications are not supported by your browser.');
@@ -315,11 +340,27 @@
             }
 
             try {
-                // Generate or obtain token
-                let token = localStorage.getItem('barakah_push_token');
+                let token = null;
+
+                // Try obtaining genuine Firebase FCM device token
+                if (typeof firebase !== 'undefined' && firebase.messaging) {
+                    try {
+                        const messaging = firebase.messaging();
+                        const vapidKey = "{{ config('firebase.web.vapid_key') }}";
+                        token = await messaging.getToken(vapidKey ? { vapidKey } : {});
+                        console.log('[FCM Web] Device token obtained from Firebase:', token);
+                    } catch (fcmErr) {
+                        console.warn('[FCM Web] Direct FCM token retrieval note:', fcmErr.message);
+                    }
+                }
+
+                // Fallback to local persistent token if FCM service worker is waiting or VAPID is unset
                 if (!token) {
-                    token = 'bk_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
-                    localStorage.setItem('barakah_push_token', token);
+                    token = localStorage.getItem('barakah_push_token');
+                    if (!token) {
+                        token = 'bk_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+                        localStorage.setItem('barakah_push_token', token);
+                    }
                 }
 
                 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;

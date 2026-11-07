@@ -20,12 +20,13 @@ return [
     |--------------------------------------------------------------------------
     */
     'web' => [
-        'api_key' => env('FIREBASE_API_KEY', ''),
-        'auth_domain' => env('FIREBASE_AUTH_DOMAIN', 'barakah-wallet.firebaseapp.com'),
-        'project_id' => env('FIREBASE_PROJECT_ID', 'barakah-wallet'),
-        'storage_bucket' => env('FIREBASE_STORAGE_BUCKET', 'barakah-wallet.appspot.com'),
-        'messaging_sender_id' => env('FIREBASE_MESSAGING_SENDER_ID', '1234567890'),
-        'app_id' => env('FIREBASE_APP_ID', ''),
+        'api_key' => env('FIREBASE_API_KEY', 'AIzaSyD6jpgKOUzP6mDXtFVOZNh7KMHIemc8Kc8'),
+        'auth_domain' => env('FIREBASE_AUTH_DOMAIN', 'barakah-c44d4.firebaseapp.com'),
+        'project_id' => env('FIREBASE_PROJECT_ID', 'barakah-c44d4'),
+        'storage_bucket' => env('FIREBASE_STORAGE_BUCKET', 'barakah-c44d4.firebasestorage.app'),
+        'messaging_sender_id' => env('FIREBASE_MESSAGING_SENDER_ID', '86263442374'),
+        'app_id' => env('FIREBASE_APP_ID', '1:86263442374:web:bb0228b229b477cb4ca0c7'),
+        'measurement_id' => env('FIREBASE_MEASUREMENT_ID', 'G-CNFXMCXTY7'),
         'vapid_key' => env('FIREBASE_VAPID_KEY', ''),
     ],
 ];

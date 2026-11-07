@@ -3,6 +3,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0d9488">
+    <meta name="description" content="Barakah — Institutional Financial Wallet & Merchant Payment Gateway powered by Relic Software">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/images/icons/icon-192x192.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="application-name" content="Barakah">
+    <meta name="apple-mobile-web-app-title" content="Barakah">
     <title>{{ __('Barakah') }} — {{ __('Your Institutional Financial Wallet') }}</title>
     
     <!-- Fonts -->
@@ -40,7 +53,9 @@
             </div>
 
             <a href="{{ route('login') }}" class="px-4 py-2 rounded-xl text-xs font-bold text-teal-800 hover:text-teal-950 transition">{{ __('Sign In') }}</a>
-            <a href="{{ route('register') }}" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-teal-700 hover:bg-teal-600 text-white shadow-sm transition">{{ __('Get Started') }}</a>
+            @if(\App\Models\SystemSetting::isRegistrationEnabled())
+                <a href="{{ route('register') }}" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-teal-700 hover:bg-teal-600 text-white shadow-sm transition">{{ __('Get Started') }}</a>
+            @endif
         </div>
     </header>
 
@@ -69,9 +84,11 @@
             <a href="{{ route('login') }}" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-teal-700 to-emerald-600 text-white font-extrabold text-sm shadow-md shadow-teal-800/20 hover:opacity-95 transition transform active:scale-95">
                 {{ __('Open Barakah Wallet') }}
             </a>
-            <a href="{{ route('register') }}" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-white border border-slate-300 text-slate-800 font-bold text-sm hover:bg-slate-50 shadow-xs transition">
-                {{ __('Create Account') }}
-            </a>
+            @if(\App\Models\SystemSetting::isRegistrationEnabled())
+                <a href="{{ route('register') }}" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-white border border-slate-300 text-slate-800 font-bold text-sm hover:bg-slate-50 shadow-xs transition">
+                    {{ __('Create Account') }}
+                </a>
+            @endif
         </div>
 
         <!-- User-Helpful Feature Cards (Clean, No Tech/Admin Jargon) -->
@@ -112,5 +129,19 @@
         </div>
     </footer>
 
+    <!-- Service Worker Registration for PWABuilder & PWA installation -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((reg) => {
+                        console.log('[Barakah PWA] Service Worker active:', reg.scope);
+                    })
+                    .catch((err) => {
+                        console.warn('[Barakah PWA] Service Worker registration failed:', err);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>

@@ -96,5 +96,21 @@
       "icons": [{ "src": "/images/icons/icon-96x96.png", "sizes": "96x96" }]
     }
   ],
+  "screenshots": [
+    {
+      "src": "/images/logo.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Barakah Institutional Financial Wallet Dashboard"
+    },
+    {
+      "src": "/images/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Barakah Mobile Wallet"
+    }
+  ],
   "prefer_related_applications": false
 }

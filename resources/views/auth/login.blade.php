@@ -3,6 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0d9488">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/images/icons/icon-192x192.png">
     <title>{{ __('Sign In') }} — {{ __('Barakah') }}</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -99,10 +106,19 @@
                 </button>
             </form>
 
+            @if(\App\Models\SystemSetting::isRegistrationEnabled())
             <div class="mt-6 pt-5 border-t border-slate-100 text-center text-xs text-slate-500">
                 {{ __('New member in the institute?') }} 
                 <a href="{{ route('register') }}" class="text-teal-700 hover:text-teal-900 font-extrabold ml-1">{{ __('Create Account') }}</a>
             </div>
+            @else
+            <div class="mt-6 pt-5 border-t border-slate-100 text-center text-xs text-slate-500">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-semibold">
+                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    {{ __('Registration is restricted to campus administration.') }}
+                </span>
+            </div>
+            @endif
         </div>
 
         <div class="mt-6 text-center text-[11px] text-slate-400">

@@ -91,5 +91,8 @@
     "Real-time alerts for received funds & payments": "Real-time alerts for received funds & payments",
     "Enable Push Notifications": "Enable Push Notifications",
     "Alerts Activated": "Alerts Activated",
-    "You are currently offline": "You are currently offline"
+    "You are currently offline": "You are currently offline",
+    "Registration is restricted to campus administration.": "Registration is restricted to campus administration.",
+    "Public registration is currently disabled by institution administrators.": "Public registration is currently disabled by institution administrators.",
+    "Public registration is currently disabled by institution administrators. Please contact campus administration to obtain an account.": "Public registration is currently disabled by institution administrators. Please contact campus administration to obtain an account."
 }

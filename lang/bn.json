@@ -91,5 +91,8 @@
     "Real-time alerts for received funds & payments": "টাকা গ্রহণ ও লেনদেনের রিয়েল-টাইম নোটিফিকেশন",
     "Enable Push Notifications": "পুশ নোটিফিকেশন চালু করুন",
     "Alerts Activated": "নোটিফিকেশন সক্রিয় আছে",
-    "You are currently offline": "আপনি বর্তমানে অফলাইনে আছেন"
+    "You are currently offline": "আপনি বর্তমানে অফলাইনে আছেন",
+    "Registration is restricted to campus administration.": "নিবন্ধন শুধুমাত্র ক্যাম্পাস প্রশাসনের জন্য সীমাবদ্ধ।",
+    "Public registration is currently disabled by institution administrators.": "প্রতিষ্ঠান প্রশাসন দ্বারা বর্তমানে উন্মুক্ত নিবন্ধন বন্ধ রাখা হয়েছে।",
+    "Public registration is currently disabled by institution administrators. Please contact campus administration to obtain an account.": "প্রতিষ্ঠান প্রশাসন দ্বারা বর্তমানে উন্মুক্ত নিবন্ধন বন্ধ রাখা হয়েছে। একাউন্ট পেতে ক্যাম্পাস প্রশাসনের সাথে যোগাযোগ করুন।"
 }

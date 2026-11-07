@@ -5,12 +5,13 @@ importScripts('https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-comp
 // Parse query params if injected, or use default Firebase configuration
 const urlParams = new URLSearchParams(location.search);
 const firebaseConfig = {
-    apiKey: urlParams.get('apiKey') || "AIzaSyDummyKeyForBarakahWalletPushSW",
-    authDomain: urlParams.get('authDomain') || "barakah-wallet.firebaseapp.com",
-    projectId: urlParams.get('projectId') || "barakah-wallet",
-    storageBucket: urlParams.get('storageBucket') || "barakah-wallet.appspot.com",
-    messagingSenderId: urlParams.get('messagingSenderId') || "1234567890",
-    appId: urlParams.get('appId') || "1:1234567890:web:abcdef123456"
+    apiKey: "AIzaSyD6jpgKOUzP6mDXtFVOZNh7KMHIemc8Kc8",
+    authDomain: "barakah-c44d4.firebaseapp.com",
+    projectId: "barakah-c44d4",
+    storageBucket: "barakah-c44d4.firebasestorage.app",
+    messagingSenderId: "86263442374",
+    appId: "1:86263442374:web:bb0228b229b477cb4ca0c7",
+    measurementId: "G-CNFXMCXTY7"
 };
 
 try {

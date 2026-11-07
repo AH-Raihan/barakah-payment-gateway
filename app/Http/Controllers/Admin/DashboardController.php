@@ -68,6 +68,8 @@ class DashboardController extends Controller
             ];
         });
 
+        $registrationEnabled = \App\Models\SystemSetting::isRegistrationEnabled();
+
         return view('admin.dashboard', compact(
             'totalUsers',
             'activeUsers',
@@ -81,7 +83,8 @@ class DashboardController extends Controller
             'todayTxVolume',
             'recentTransactions',
             'recentDeposits',
-            'days'
+            'days',
+            'registrationEnabled'
         ));
     }
 }

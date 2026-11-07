@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\SystemSetting;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Services\ActivityLogService;
@@ -19,11 +20,20 @@ class RegisterController extends Controller
         if (Auth::check()) {
             return redirect()->route('dashboard');
         }
+
+        if (!SystemSetting::isRegistrationEnabled()) {
+            return redirect()->route('login')->with('error', __('Public registration is currently disabled by institution administrators. Please contact campus administration to obtain an account.'));
+        }
+
         return view('auth.register');
     }
 
     public function register(Request $request)
     {
+        if (!SystemSetting::isRegistrationEnabled()) {
+            return redirect()->route('login')->with('error', __('Public registration is currently disabled by institution administrators.'));
+        }
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],

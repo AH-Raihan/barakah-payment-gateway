@@ -26,6 +26,38 @@
         </div>
     </div>
 
+    <!-- Registration Restriction Alert & Quick Toggle -->
+    <div class="p-4 rounded-3xl bg-white border border-slate-200/90 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl flex items-center justify-center font-bold text-lg {{ $registrationEnabled ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200' }}">
+                @if($registrationEnabled)
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                @else
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                @endif
+            </div>
+            <div>
+                <div class="flex items-center gap-2">
+                    <h3 class="text-xs font-bold text-slate-900">Public Registration Status</h3>
+                    <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full {{ $registrationEnabled ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800' }}">
+                        {{ $registrationEnabled ? 'OPEN' : 'RESTRICTED' }}
+                    </span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5">
+                    {{ $registrationEnabled ? 'New campus members can self-register on the landing page.' : 'Registration is restricted. Only admins can register new users or upload via CSV.' }}
+                </p>
+            </div>
+        </div>
+
+        <form action="{{ route('admin.settings.toggle-registration') }}" method="POST">
+            @csrf
+            <button type="submit" onclick="return confirm('Are you sure you want to {{ $registrationEnabled ? 'restrict' : 'enable' }} registration?')"
+                    class="w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-xs {{ $registrationEnabled ? 'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200' : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-700/20' }}">
+                <span>{{ $registrationEnabled ? 'Restrict Registration' : 'Open Registration' }}</span>
+            </button>
+        </form>
+    </div>
+
     <!-- Core Financial Stats Cards Grid (Clean White Light Theme) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         

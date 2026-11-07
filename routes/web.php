@@ -114,6 +114,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verify_pin', 'role:
     Route::post('/users/bulk', [UserController::class, 'bulkCreateProcess'])->name('users.bulk.process');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
     Route::post('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
+    Route::post('/settings/toggle-registration', [UserController::class, 'toggleRegistration'])->name('settings.toggle-registration');
 
     // Institutional Admin Deposits (Add Balance)
     Route::get('/deposits', [DepositController::class, 'index'])->name('deposits.index');

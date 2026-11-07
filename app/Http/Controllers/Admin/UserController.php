@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\SystemSetting;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Services\ActivityLogService;
@@ -43,8 +44,9 @@ class UserController extends Controller
         }
 
         $users = $query->latest()->paginate(15)->withQueryString();
+        $registrationEnabled = SystemSetting::isRegistrationEnabled();
 
-        return view('admin.users.index', compact('users', 'role', 'status', 'search'));
+        return view('admin.users.index', compact('users', 'role', 'status', 'search', 'registrationEnabled'));
     }
 
     public function create()
@@ -263,6 +265,25 @@ class UserController extends Controller
         );
 
         return view('admin.users.bulk_result', compact('createdCount', 'errors', 'createdList', 'defaultPin', 'defaultPassword'));
+    }
+
+    public function toggleRegistration(Request $request)
+    {
+        $current = SystemSetting::isRegistrationEnabled();
+        $newStatus = !$current;
+        SystemSetting::set('registration_enabled', $newStatus);
+
+        ActivityLogService::log(
+            Auth::id(),
+            'toggle_registration',
+            'Admin toggled public registration: ' . ($newStatus ? 'ENABLED' : 'DISABLED')
+        );
+
+        $msg = $newStatus 
+            ? 'Public user registration has been enabled.'
+            : 'Public user registration has been restricted (disabled).';
+
+        return back()->with('success', $msg);
     }
 }
 

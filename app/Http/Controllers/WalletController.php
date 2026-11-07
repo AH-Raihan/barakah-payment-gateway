@@ -147,13 +147,7 @@ class WalletController extends Controller
         $user = Auth::user();
         $wallet = $user->wallet;
 
-        // Available agents for cashout
-        $agents = User::where('role', 'agent')
-            ->where('status', 'active')
-            ->take(5)
-            ->get();
-
-        return view('wallet.cashout', compact('user', 'wallet', 'agents'));
+        return view('wallet.cashout', compact('user', 'wallet'));
     }
 
     public function cashOut(Request $request)
