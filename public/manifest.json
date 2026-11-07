@@ -1,0 +1,17 @@
+{
+  "name": "Barakah — Institutional Financial Wallet",
+  "short_name": "Barakah",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#042f2e",
+  "theme_color": "#0d9488",
+  "description": "Your Institutional Financial Wallet powered by Relic Software",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
+

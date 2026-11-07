@@ -1,0 +1,13 @@
+I need a App/for mainly android ui but pc view also  responsive(like bottom navbar),
+make an app like Mobile Banking system(like, Bkash/Nagad/Upay etc) 
+but my software is don't need charge/vat for financial transection in localarea in our institute,
+Name is Barakah (Your Institutional Financial Wallet), 
+here a user can regester/create or admin can bulk create account for employees, 
+then user have a account where the see there balance and sendmoney to other users or cash out, 
+and i need to this is as payment gateway for my others projects for others projects can be paid by this payment gateway,
+or admin can add new balance to user account by api, but i need also see how much balance they added,
+and overall multirole user system also, and payment sendmoney ,cashout need very secure,
+and bugless(like onclick to don't create multiple transection if network or others issues, or balance less then 0 etc)
+and ui is modern, clean not to much detailed/hard, admin can see dashboard.
+user need pin for every time app open (5digit) but account need password also can enable two factor auth, sms gateway(optional).
+app theme is green(teal) like like halal/islamic
