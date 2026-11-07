@@ -6,8 +6,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#0d9488">
     <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="/images/icons/icon-192x192.png">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="application-name" content="Barakah">
+    <meta name="apple-mobile-web-app-title" content="Barakah">
     <title>@yield('title', __('Barakah')) — {{ __('Your Institutional Financial Wallet') }}</title>
     
     <!-- Fonts (Hind Siliguri for Bengali, Amiri for Arabic, Plus Jakarta Sans for English) -->
@@ -222,6 +227,123 @@
 
         </div>
     </div>
+
+    <!-- In-App PWA Install Banner (Android / Desktop Standalone) -->
+    <div id="pwa-install-banner" class="hidden fixed bottom-20 lg:bottom-6 right-4 left-4 lg:left-auto lg:w-96 z-50 bg-white border border-teal-200 rounded-3xl p-4 shadow-xl shadow-teal-900/10">
+        <div class="flex items-start gap-3">
+            <img src="/images/icons/icon-96x96.png" alt="Barakah" class="w-12 h-12 rounded-2xl shadow-sm shrink-0 border border-slate-100">
+            <div class="flex-1 min-w-0">
+                <h4 class="text-xs font-bold text-slate-900">{{ __('Install Barakah Wallet App') }}</h4>
+                <p class="text-[11px] text-slate-500 mt-0.5 leading-snug">{{ __('Install on your phone or desktop for instant transfers and push notifications.') }}</p>
+                <div class="mt-2.5 flex items-center gap-2">
+                    <button id="pwa-install-btn" class="px-3.5 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold shadow-xs transition">
+                        {{ __('Install App') }}
+                    </button>
+                    <button id="pwa-dismiss-btn" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold transition">
+                        {{ __('Maybe Later') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PWA Service Worker & Push Notification Helper Scripts -->
+    <script>
+        // ─── 1. Service Worker Registration ─────────────────────────────
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((reg) => {
+                        console.log('[Barakah PWA] Service Worker registered:', reg.scope);
+                    })
+                    .catch((err) => {
+                        console.warn('[Barakah PWA] Service Worker registration failed:', err);
+                    });
+            });
+        }
+
+        // ─── 2. In-App Install Prompt ──────────────────────────────────
+        let deferredPrompt = null;
+        const installBanner = document.getElementById('pwa-install-banner');
+        const installBtn = document.getElementById('pwa-install-btn');
+        const dismissBtn = document.getElementById('pwa-dismiss-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // Only show if user hasn't dismissed it in this session
+            if (!sessionStorage.getItem('barakah_pwa_dismissed')) {
+                installBanner.classList.remove('hidden');
+            }
+        });
+
+        if (installBtn) {
+            installBtn.addEventListener('click', async () => {
+                if (!deferredPrompt) return;
+                installBanner.classList.add('hidden');
+                deferredPrompt.prompt();
+                const choice = await deferredPrompt.userChoice;
+                if (choice.outcome === 'accepted') {
+                    console.log('[Barakah PWA] User accepted installation prompt');
+                }
+                deferredPrompt = null;
+            });
+        }
+
+        if (dismissBtn) {
+            dismissBtn.addEventListener('click', () => {
+                installBanner.classList.add('hidden');
+                sessionStorage.setItem('barakah_pwa_dismissed', '1');
+            });
+        }
+
+        window.addEventListener('appinstalled', () => {
+            installBanner.classList.add('hidden');
+            console.log('[Barakah PWA] App was successfully installed');
+        });
+
+        // ─── 3. Push Notification Registration Helper ──────────────────
+        window.registerPushToken = async function() {
+            if (!('Notification' in window)) {
+                alert('Notifications are not supported by your browser.');
+                return false;
+            }
+
+            const permission = await Notification.requestPermission();
+            if (permission !== 'granted') {
+                return false;
+            }
+
+            try {
+                // Generate or obtain token
+                let token = localStorage.getItem('barakah_push_token');
+                if (!token) {
+                    token = 'bk_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+                    localStorage.setItem('barakah_push_token', token);
+                }
+
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+                const response = await fetch('/device-token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        token: token,
+                        device_type: /Android/i.test(navigator.userAgent) ? 'android' : (/iPhone|iPad/i.test(navigator.userAgent) ? 'ios' : 'web')
+                    })
+                });
+
+                const data = await response.json();
+                return data.success;
+            } catch (err) {
+                console.error('[Barakah Push] Token sync error:', err);
+                return false;
+            }
+        };
+    </script>
 
     @stack('scripts')
 </body>

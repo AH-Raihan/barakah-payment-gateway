@@ -159,4 +159,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(PinAttempt::class);
     }
+
+    public function deviceTokens(): HasMany
+    {
+        return $this->hasMany(DeviceToken::class);
+    }
 }

@@ -484,3 +484,69 @@ test('admin can deposit balance to user account via API and track total balance 
     $indexResponse->assertJson(['success' => true]);
     expect((float) $indexResponse->json('summary.total_amount_added'))->toBeGreaterThanOrEqual(1500.0);
 });
+
+test('user can register device push notification token and remove it', function () {
+    $user = User::factory()->create(['role' => 'user', 'status' => 'active']);
+
+    // Register token
+    $response = $this->actingAs($user)->postJson('/device-token', [
+        'token' => 'fcm_test_device_token_12345',
+        'device_type' => 'android',
+    ]);
+
+    $response->assertStatus(200);
+    $response->assertJson(['success' => true]);
+
+    $this->assertDatabaseHas('device_tokens', [
+        'user_id' => $user->id,
+        'token' => 'fcm_test_device_token_12345',
+        'device_type' => 'android',
+    ]);
+
+    // Delete token
+    $delResponse = $this->actingAs($user)->deleteJson('/device-token', [
+        'token' => 'fcm_test_device_token_12345',
+    ]);
+    $delResponse->assertStatus(200);
+    $delResponse->assertJson(['success' => true]);
+
+    $this->assertDatabaseMissing('device_tokens', [
+        'token' => 'fcm_test_device_token_12345',
+    ]);
+});
+
+test('fcm service dispatches push notification to registered devices', function () {
+    $user = User::factory()->create(['role' => 'user', 'status' => 'active']);
+    \App\Models\DeviceToken::create([
+        'user_id' => $user->id,
+        'token' => 'mock_fcm_token_abc123',
+        'device_type' => 'android',
+    ]);
+
+    $result = \App\Services\FcmService::sendToUser(
+        $user,
+        'Money Received: 500 BDT',
+        'You have received 500 BDT from Institutional Admin.',
+        ['transaction_id' => 'TXN-999']
+    );
+
+    expect($result)->toBeArray();
+    expect($result['success'])->toBeTrue();
+    expect($result['sent_count'])->toBe(1);
+});
+
+test('pwa manifest and service worker assets exist and are valid', function () {
+    $manifestPath = public_path('manifest.json');
+    expect(file_exists($manifestPath))->toBeTrue();
+
+    $manifest = json_decode(file_get_contents($manifestPath), true);
+    expect($manifest)->toBeArray();
+    expect($manifest['name'])->toContain('Barakah');
+    expect($manifest['display'])->toBe('standalone');
+    expect($manifest['icons'])->toBeArray();
+    expect(count($manifest['icons']))->toBeGreaterThan(0);
+
+    expect(file_exists(public_path('sw.js')))->toBeTrue();
+    expect(file_exists(public_path('firebase-messaging-sw.js')))->toBeTrue();
+    expect(file_exists(public_path('.well-known/assetlinks.json')))->toBeTrue();
+});

@@ -89,6 +89,54 @@
         </a>
     </div>
 
+    <!-- Push Notifications & Mobile App Card -->
+    <div x-data="{ 
+        notifStatus: ('Notification' in window) ? Notification.permission : 'unsupported',
+        loading: false,
+        msg: '',
+        async requestPush() {
+            this.loading = true;
+            const ok = await window.registerPushToken();
+            this.notifStatus = Notification.permission;
+            this.loading = false;
+            this.msg = ok ? 'Instant push notifications enabled successfully!' : 'Permission denied or dismiss by browser.';
+        }
+    }" class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-sm space-y-3">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-slate-800">Instant Push Notifications (FCM)</h4>
+                    <p class="text-[11px] text-slate-500">Real-time alerts for received funds & payments</p>
+                </div>
+            </div>
+            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full capitalize"
+                  :class="notifStatus === 'granted' ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-600 border border-slate-200'"
+                  x-text="notifStatus === 'granted' ? 'Active' : (notifStatus === 'denied' ? 'Blocked' : 'Off')">
+            </span>
+        </div>
+
+        <template x-if="msg">
+            <p class="text-xs text-teal-700 font-semibold bg-teal-50 p-2.5 rounded-xl border border-teal-200" x-text="msg"></p>
+        </template>
+
+        <div class="pt-1 flex items-center gap-2">
+            <button type="button" @click="requestPush()" :disabled="loading || notifStatus === 'granted'"
+                    class="py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
+                    :class="notifStatus === 'granted' ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-teal-700 hover:bg-teal-600 text-white'">
+                <span x-show="!loading" x-text="notifStatus === 'granted' ? 'Alerts Activated' : 'Enable Push Notifications'"></span>
+                <span x-show="loading">Connecting...</span>
+            </button>
+            <button type="button" onclick="if(deferredPrompt){ deferredPrompt.prompt(); } else { alert('Barakah app is already installed or accessible on your home screen.'); }"
+                    class="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                Install App
+            </button>
+        </div>
+    </div>
+
     <!-- Update Personal Details Form -->
     <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-sm">
         <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3">Personal Contact Information</h3>

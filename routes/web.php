@@ -53,6 +53,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pin/verify', [PinController::class, 'show'])->name('pin.show');
     Route::post('/pin/verify', [PinController::class, 'verify'])->name('pin.verify');
+
+    // Firebase Device Push Notification Tokens
+    Route::post('/device-token', [\App\Http\Controllers\DeviceTokenController::class, 'store'])->name('device-token.store');
+    Route::delete('/device-token', [\App\Http\Controllers\DeviceTokenController::class, 'destroy'])->name('device-token.destroy');
 });
 
 // ─── Protected User Wallet Routes (Requires PIN & Active Wallet) ───

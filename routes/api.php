@@ -35,4 +35,6 @@ Route::prefix('v1/admin')->middleware(['auth:sanctum'])->group(function () {
 // ─── Authenticated User / Client Wallet API ────────────────────────
 Route::prefix('v1/wallet')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/balance', [WalletApiController::class, 'balance']);
+    Route::post('/device-token', [\App\Http\Controllers\DeviceTokenController::class, 'store']);
+    Route::delete('/device-token', [\App\Http\Controllers\DeviceTokenController::class, 'destroy']);
 });
