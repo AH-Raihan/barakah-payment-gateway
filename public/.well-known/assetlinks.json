@@ -3,11 +3,20 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
+      "package_name": "com.relicsoftware.barakah.twa",
+      "sha256_cert_fingerprints": [
+        "94:FC:D8:F8:57:04:68:2F:5C:5E:ED:51:7B:B8:22:BA:0A:C1:FE:87:AC:5A:8D:22:EA:D7:B2:E4:19:3F:AB:D4"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
       "package_name": "com.relicsoftware.barakah",
       "sha256_cert_fingerprints": [
-        "14:6D:E9:7D:0C:52:97:AE:CE:75:E6:93:B4:98:8E:7C:17:C3:58:62:38:52:54:14:F8:78:E2:20:97:DF:A5:AA"
+        "94:FC:D8:F8:57:04:68:2F:5C:5E:ED:51:7B:B8:22:BA:0A:C1:FE:87:AC:5A:8D:22:EA:D7:B2:E4:19:3F:AB:D4"
       ]
     }
   }
 ]
-
