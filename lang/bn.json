@@ -82,5 +82,14 @@
     "Language": "ভাষা",
     "Switch User": "ব্যবহারকারী পরিবর্তন",
     "Administration": "অ্যাডমিন প্যানেল",
-    "Admin Portal": "অ্যাডমিন পোর্টাল"
+    "Admin Portal": "অ্যাডমিন পোর্টাল",
+    "Install Barakah Wallet App": "বারাকাহ ওয়ালেট অ্যাপ ইনস্টল করুন",
+    "Install App": "অ্যাপ ইনস্টল করুন",
+    "Maybe Later": "পরে করব",
+    "Install on your phone or desktop for instant transfers and push notifications.": "তাৎক্ষণিক লেনদেন এবং পুশ নোটিফিকেশনের জন্য আপনার মোবাইল বা কম্পিউটারে ইনস্টল করুন।",
+    "Instant Push Notifications (FCM)": "তাৎক্ষণিক পুশ নোটিফিকেশন",
+    "Real-time alerts for received funds & payments": "টাকা গ্রহণ ও লেনদেনের রিয়েল-টাইম নোটিফিকেশন",
+    "Enable Push Notifications": "পুশ নোটিফিকেশন চালু করুন",
+    "Alerts Activated": "নোটিফিকেশন সক্রিয় আছে",
+    "You are currently offline": "আপনি বর্তমানে অফলাইনে আছেন"
 }

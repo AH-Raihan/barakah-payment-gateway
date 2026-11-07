@@ -12,22 +12,23 @@ class FcmService
     /**
      * Send an FCM push notification to a specific user across all registered devices.
      */
-    public function sendToUser(User $user, string $title, string $body, array $data = []): bool
+    public static function sendToUser(User $user, string $title, string $body, array $data = []): array
     {
         $tokens = $user->deviceTokens()->pluck('token')->toArray();
 
         if (empty($tokens)) {
             Log::info("FCM: No device tokens registered for user ID {$user->id} ({$user->name}). Notification: {$title}");
-            return true;
+            return ['success' => true, 'sent_count' => 0, 'reason' => 'no_tokens'];
         }
 
-        return $this->sendToTokens($tokens, $title, $body, $data);
+        $sent = self::sendToTokens($tokens, $title, $body, $data);
+        return ['success' => $sent, 'sent_count' => count($tokens)];
     }
 
     /**
      * Send notification to an array of device registration tokens.
      */
-    public function sendToTokens(array $tokens, string $title, string $body, array $data = []): bool
+    public static function sendToTokens(array $tokens, string $title, string $body, array $data = []): bool
     {
         if (empty($tokens)) {
             return false;

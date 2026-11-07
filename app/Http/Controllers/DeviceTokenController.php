@@ -35,5 +35,24 @@ class DeviceTokenController extends Controller
             'message' => 'Device registration token saved successfully.',
         ]);
     }
+
+    public function destroy(Request $request)
+    {
+        $request->validate([
+            'token' => 'required|string',
+        ]);
+
+        $user = Auth::user();
+        if ($user) {
+            DeviceToken::where('user_id', $user->id)
+                ->where('token', $request->input('token'))
+                ->delete();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Device registration token removed successfully.',
+        ]);
+    }
 }
 

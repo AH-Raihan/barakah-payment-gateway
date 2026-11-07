@@ -108,8 +108,8 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                 </div>
                 <div>
-                    <h4 class="text-xs font-bold text-slate-800">Instant Push Notifications (FCM)</h4>
-                    <p class="text-[11px] text-slate-500">Real-time alerts for received funds & payments</p>
+                    <h4 class="text-xs font-bold text-slate-800">{{ __('Instant Push Notifications (FCM)') }}</h4>
+                    <p class="text-[11px] text-slate-500">{{ __('Real-time alerts for received funds & payments') }}</p>
                 </div>
             </div>
             <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full capitalize"
@@ -126,13 +126,13 @@
             <button type="button" @click="requestPush()" :disabled="loading || notifStatus === 'granted'"
                     class="py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
                     :class="notifStatus === 'granted' ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-teal-700 hover:bg-teal-600 text-white'">
-                <span x-show="!loading" x-text="notifStatus === 'granted' ? 'Alerts Activated' : 'Enable Push Notifications'"></span>
+                <span x-show="!loading" x-text="notifStatus === 'granted' ? '{{ __('Alerts Activated') }}' : '{{ __('Enable Push Notifications') }}'"></span>
                 <span x-show="loading">Connecting...</span>
             </button>
             <button type="button" onclick="if(deferredPrompt){ deferredPrompt.prompt(); } else { alert('Barakah app is already installed or accessible on your home screen.'); }"
                     class="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center gap-1.5">
                 <svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                Install App
+                {{ __('Install App') }}
             </button>
         </div>
     </div>

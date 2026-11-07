@@ -82,5 +82,14 @@
     "Language": "Language",
     "Switch User": "Switch User",
     "Administration": "Administration",
-    "Admin Portal": "Admin Portal"
+    "Admin Portal": "Admin Portal",
+    "Install Barakah Wallet App": "Install Barakah Wallet App",
+    "Install App": "Install App",
+    "Maybe Later": "Maybe Later",
+    "Install on your phone or desktop for instant transfers and push notifications.": "Install on your phone or desktop for instant transfers and push notifications.",
+    "Instant Push Notifications (FCM)": "Instant Push Notifications (FCM)",
+    "Real-time alerts for received funds & payments": "Real-time alerts for received funds & payments",
+    "Enable Push Notifications": "Enable Push Notifications",
+    "Alerts Activated": "Alerts Activated",
+    "You are currently offline": "You are currently offline"
 }

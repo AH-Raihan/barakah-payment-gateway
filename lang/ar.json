@@ -82,5 +82,14 @@
     "Language": "اللغة",
     "Switch User": "تبديل الحساب",
     "Administration": "الإدارة",
-    "Admin Portal": "بوابة الإدارة"
+    "Admin Portal": "بوابة الإدارة",
+    "Install Barakah Wallet App": "تثبيت تطبيق محفظة بركة",
+    "Install App": "تثبيت التطبيق",
+    "Maybe Later": "ربما لاحقاً",
+    "Install on your phone or desktop for instant transfers and push notifications.": "قم بالتثبيت على هاتفك أو حاسوبك للتحويلات الفورية وإشعارات الدفع.",
+    "Instant Push Notifications (FCM)": "إشعارات الدفع الفورية (FCM)",
+    "Real-time alerts for received funds & payments": "تنبيهات فورية عند استلام الأموال والمدفوعات",
+    "Enable Push Notifications": "تفعيل إشعارات الدفع",
+    "Alerts Activated": "الإشعارات مفعلة",
+    "You are currently offline": "أنت غير متصل بالإنترنت حالياً"
 }

@@ -47,15 +47,15 @@ class DatabaseSeeder extends Seeder
             'account_id' => 'BRK00000099',
         ]);
 
-        Wallet::create([
-            'user_id' => $agent->id,
-            'balance' => 500000.0000,
-            'currency' => 'BDT',
-            'status' => 'active',
-        ]);
+        // Wallet::create([
+        //     'user_id' => $agent->id,
+        //     'balance' => 500000.0000,
+        //     'currency' => 'BDT',
+        //     'status' => 'active',
+        // ]);
 
         // 4. Create test users with wallets
-        for ($i = 1; $i <= 5; $i++) {
+        /*for ($i = 1; $i <= 5; $i++) {
             $user = User::create([
                 'name' => "User {$i}",
                 'email' => "user{$i}@barakah.test",
@@ -73,6 +73,6 @@ class DatabaseSeeder extends Seeder
                 'currency' => 'BDT',
                 'status' => 'active',
             ]);
-        }
+        }*/
     }
 }
